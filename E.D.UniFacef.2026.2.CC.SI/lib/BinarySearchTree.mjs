@@ -21,10 +21,75 @@ export default class BinarySearchTree {
 
     //1º caso: árvore vazia
     //o primeiro nodo fica sendo a raiz da árvore
-    if (this.#root === null) this.#root = inserted;
+    if (this.#root === null) {
+      this.#root = inserted;
+    }
     //2º caso: inserção recursiva, percorrendo a árvore recursivamente
-    else this.#insertNode(inserted, this.#root);
+    else {
+      this.#insertNode(inserted, this.#root);
+    }
   }
   //método PRIVADO que insere um novo nodo na árvore
-  #insertNode(inserted, root) {}
+  #insertNode(inserted, root) {
+    //1º caso: valor a ser inserido é MENOR que o valor da raiz
+    //inserção ocorre à ESQUERDA da raiz
+    if (inserted.data < root.data) {
+      //se a posição à esquerda da raiz está desocupada, faz a inserção
+      if (root.left === null) {
+        root.left = inserted;
+      }
+      //senão, reinicia o processo de inserção, recursivamente, com a subárvore esquerda como raiz
+      else {
+        this.#insertNode(inserted, root.left);
+      }
+      //2º caso: valor a ser inserido é MAIOR que o valor da raiz
+      //inserção ocorre à DIREITA da raiz
+    } else if (inserted.data > root.data) {
+      //se a posição à direita da raiz está desocupada, faz a inserção
+      if (root.right === null) {
+        root.right = inserted;
+      }
+      //senão, reinicia o processo de inserção, recursivamente, com a subárvore direita como raiz
+      else {
+        this.#insertNode(inserted, root.right);
+      }
+      //3º caso: o valor a ser inserido é IGUAL ao valor da raiz;
+      //senão, reinicia o processo de inserção, recursivamente, com a subárvore esquerda como raiz
+    } else {
+      this.#insertNode(inserted, root.left);
+    }
+  }
+
+  /*
+    PERCURSOS
+    Métodos que executa o percurso em-ordem (in-order traversal) na árvore
+    Ordem do percurso:
+        1º ~> percorre recursivamente em-ordem a subárvore esquerda
+        2º ~> visita a raiz
+        3º ~> percorre recursivamente em-ordem a subárvore direita
+  */
+
+  inOrderTraversal(fnCallback, root = this.#root) {
+    if (root !== null) {
+      this.inOrderTraversal(fnCallback, root.left); //1º
+      fnCallback(root.data); //2º
+      this.inOrderTraversal(fnCallback, root.right); //3º
+    }
+  }
+
+  /*
+    Método que executa o percurso pré-ordem (pre-order traversal) na árvore
+    Ordem do perrcurso:
+        1º ~> visita a raiz
+        2º ~> percorre recursivamente em-ordem a subárvore esquerda
+        3º ~> percorre recursivamente em-ordem a subárvore direita
+    */
+
+  preOrderTraversal(fnCallback, root = this.#root) {
+    if (root !== null) {
+      fnCallback(root.data); //1º
+      this.preOrderTraversal(fnCallback, root.left); //2º
+      this.preOrderTraversal(fnCallback, root.right); //3º
+    }
+  }
 }
