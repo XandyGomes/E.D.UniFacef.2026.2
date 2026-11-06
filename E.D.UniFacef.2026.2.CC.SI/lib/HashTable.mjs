@@ -1,4 +1,4 @@
-class HashTable {
+export default class HashTable {
   constructor(tamanho = 11) {
     this.tamanho = tamanho;
     this.tabela = Array.from({ length: tamanho }, () => []);
@@ -29,12 +29,13 @@ class HashTable {
   }
 
   get(chave) {
-    const balde = this.tabela[thid._hash(chave)];
+    const balde = this.tabela[this._hash(chave)];
     for (const [k, v] of balde) {
       if (k === chave) {
         return v;
       }
     }
+    return undefined;
   }
 
   delete(chave) {
@@ -51,7 +52,7 @@ class HashTable {
   _rehash() {
     const antiga = this.tabela;
     this.tamanho = this.tamanho * 2 + 1;
-    this.tabela = Array.from({ length: tamanho }, () => []);
+    this.tabela = Array.from({ length: this.tamanho }, () => []);
     this.quantidade = 0;
     for (const balde of antiga) {
       for (const [k, v] of balde) {
@@ -60,7 +61,11 @@ class HashTable {
     }
   }
 
-  imprimir(){
-    
+  imprimir() {
+    this.tabela.forEach((balde, i) => {
+      const itens = balde.map(([k, v]) => `${k}:${v}`).join(" -> ");
+      console.log(` ${i}: ${itens || "(vazio)"}`);
+    });
+    console.log(`Quantidade: ${this.quantidade} Tamanho: ${this.tamanho}`);
   }
 }
